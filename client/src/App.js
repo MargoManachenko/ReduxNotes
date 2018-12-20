@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
-import Footer from './components/Footer';
+import Filter from './components/Filter';
 import AddTodo from './containers/AddTodo';
-import VisibliTodoList from './containers/VisibleTodoList';
+import VisibleTodoList from './containers/VisibleTodoList';
 
 class App extends Component {
   render() {
     return (
-     <div>
+     <div className="wrapper">
+         <Filter/>
          <AddTodo/>
-         <VisibliTodoList/>
-         <Footer/>
+         <VisibleTodoList/>
      </div>
     );
   }

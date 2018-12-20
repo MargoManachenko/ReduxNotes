@@ -1,42 +1,54 @@
-import { ADD_TODO, TOGGLE_TODO } from "../constants/ActionTypes";
+import {ADD_TODO, TOGGLE_TODO, DELETE_TODO} from "../constants/ActionTypes";
+import {SET_VISIBILITY_FILTER} from "../constants/ActionTypes";
+import {VisibilityFilters} from "../constants/Filters";
+import {combineReducers} from 'redux';
+import {deleteTodo} from "../actions/index";
 
-const todo = (state, action) =>{
-    console.log(action)
-    switch (action.type){
+const {SHOW_ALL} = VisibilityFilters;
+
+function todos(state = [], action) {
+    switch (action.type) {
         case ADD_TODO:
-            return{
-                id: action.id,
-                text: action.text,
-                completed: false
-            };
-        case TOGGLE_TODO:
-            console.log(state.id, action.id)
-            if(state.id !== action.id){
-                return state;
-            }
-            return Object.assign({}, state, {
-                completed: !state.completed
-            });
-
-        default:
-            return state;
-    }
-};
-
-const todos = (state=[], action) => {
-    switch (action.type){
-        case ADD_TODO:
-            return[
+            return [
                 ...state,
-                todo(undefined, action)
+                {
+                    id: action.id,
+                    text: action.text,
+                    completed: false
+                }
             ];
         case TOGGLE_TODO:
-            return state.map(t =>
-                todo(t, action)
-            );
+            return state.map((todo, id) => {
+                if (id === action.id) {
+                    return Object.assign({}, todo, {
+                        completed: !todo.completed
+                    })
+                }
+                return todo;
+            });
+        case DELETE_TODO:
+            let index = state.findIndex(note => note.id === action.id);
+            state.splice(index, 1);
+            return [...state];
         default:
             return state;
     }
-};
+}
 
-export default todos;
+
+function visibilityFilter(state = SHOW_ALL, action) {
+    switch (action.type) {
+        case SET_VISIBILITY_FILTER:
+            return action.filter;
+        default:
+            return state;
+    }
+}
+
+const todoApp = combineReducers({
+    visibilityFilter,
+    todos
+});
+
+
+export default todoApp;

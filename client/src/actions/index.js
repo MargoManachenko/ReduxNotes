@@ -10,6 +10,13 @@ export function addTodo(text) {
     }
 }
 
+export function deleteTodo(id){
+    return {
+        type: types.DELETE_TODO,
+        id
+    }
+}
+
 export function toggleTodo(id) {
     return {
         type: types.TOGGLE_TODO,

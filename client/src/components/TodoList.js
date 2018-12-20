@@ -1,16 +1,17 @@
-import React from  'react';
+import React from 'react';
 import Todo from "./Todo";
 
-const TodoList = ({todos, onTodoClick}) => (
-    <ul>
-        {todos.map((todo)=>
+const TodoList = ({todos, onTodoClick, onTodoDelete}) => (
+    <div className="notes-list">
+        {todos.map((todo) =>
             <Todo
                 key={todo.id}
                 {...todo}
-                onClick={()=>onTodoClick(todo.id)}
+                onClickNote={() => onTodoClick(todo.id)}
+                onDeleteNote={() => onTodoDelete(todo.id)}
             />
         )}
-    </ul>
+    </div>
 );
 
 export default TodoList;
